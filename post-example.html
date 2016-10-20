@@ -1,0 +1,74 @@
+<html>
+<head></head>
+<body>
+<h1>Forward Technologies</h1>
+<h2>Postear Delito</h2>
+<form action="https://script.google.com/macros/s/AKfycbyJWZJW2NVN6vqLLuIckBlga-bojXt-qttBYcEAZ5CQ/exec" method="get">
+  <p><input placeholder="Fecha" type="text" name="fecha"></p>
+  <p><input placeholder="hora" type="text" name="hora"></p>
+  <p><input placeholder="latitud" type="text" name="latitud"></p>
+  <p><input placeholder="longitud" type="text" name="longitud"></p>
+  <p><input placeholder="tipo" type="text" name="tipo"></p>
+  <p><input placeholder="titulo" type="text" name="titulo"></p>
+  <p><input placeholder="descripcion" type="text" name="descripcion"></p>
+  <p><input placeholder="pais" type="text" name="pais"></p>
+  <p><input placeholder="provincia" type="text" name="provincia"></p>
+  <p><input placeholder="ciudad" type="text" name="ciudad"></p>
+  
+  <input type="hidden" name="callback" value="JSONPCallback">
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+var jsonp = {
+    callbackCounter: 0,
+ 
+    fetch: function(url, callback) {
+        var fn = 'JSONPCallback_' + this.callbackCounter++;
+        window[fn] = this.evalJSONP(callback);
+        url = url.replace('=JSONPCallback', '=' + fn);
+ 
+        var scriptTag = document.createElement('SCRIPT');
+        scriptTag.src = url;
+        document.getElementsByTagName('HEAD')[0].appendChild(scriptTag);
+    },
+ 
+    evalJSONP: function(callback) {
+        return function(data) {
+            var validJSON = false;
+        if (typeof data == "string") {
+            try {validJSON = JSON.parse(data);} catch (e) {}
+        } else {
+            validJSON = JSON.parse(JSON.stringify(data));
+            }
+            if (validJSON) {
+                callback(validJSON);
+            } else {
+                throw("JSONP call returned invalid or empty JSON");
+            }
+        }
+    }
+}
+
+var delito = {
+  fecha: 1,
+  hora: 2,
+  latitud: 3,
+  longitud: 4,
+  tipo: 5,
+  titulo: 6,
+  descripcion: 7,
+  pais: 8,
+  provincia: 9,
+  ciudad: 10
+}
+
+var params = Object.keys(delito).map( function(key) {
+    return key + '=' + delito[key];
+}).join('&');
+var postDelitoURI = 'https://script.google.com/macros/s/AKfycbyJWZJW2NVN6vqLLuIckBlga-bojXt-qttBYcEAZ5CQ/exec?' + params + '&callback=JSONPCallback';
+
+//jsonp.fetch(postDelitoURI, function(data) {console.log(data)});
+</script>
+</body>
+</html>
