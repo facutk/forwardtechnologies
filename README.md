@@ -1,2 +1,0 @@
-# forwardtechnologies
-forwardtechnologies.ml website
